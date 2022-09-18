@@ -4,7 +4,10 @@ namespace Modules\Auth\Http\Controllers;
 
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Hash;
+use Modules\Auth\Entities\User;
 
 class AuthController extends Controller
 {
@@ -21,9 +24,58 @@ class AuthController extends Controller
      * Show the form for creating a new resource.
      * @return Renderable
      */
-    public function create()
+    public function create(Request $request)
     {
-        return view('auth::create');
+        try {
+            // validate user registration
+            $fields = $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|unique:users,email',
+                'password' => 'required|string',
+                'role' => 'required|string',
+            ]);
+            // create new user with role
+            return User::create([
+                'name' => $fields['name'],
+                'email' => $fields['email'],
+                'password' => Hash::make($fields['password']),
+                'role' => $fields['role'],
+            ]);
+        } catch (\Exception$e) {
+            return response($e, 401);
+        }
+    }
+
+    public function login(Request $request)
+    {
+        try {
+            $fields = $request->validate([
+                'email' => 'required|string',
+                'password' => 'required|string',
+            ]);
+
+            // Check email
+            $user = User::where('email', $fields['email'])->first();
+
+            // Check password
+            if (!$user || !Hash::check($fields['password'], $user->password)) {
+                return response([
+                    'message' => 'Bad credentials',
+                ], 401);
+            }
+
+            $token = $user->createToken('myapptoken')->plainTextToken;
+
+            $response = [
+                'user' => $user,
+                'token' => $token,
+            ];
+
+            return response($response, 201);
+
+        } catch (\Exception $e) {
+            return response($e, 401);
+        }
     }
 
     /**

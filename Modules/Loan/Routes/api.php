@@ -16,3 +16,9 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/loan', function (Request $request) {
     return $request->user();
 });
+
+
+//protected routes
+Route::group(['middleware'=>['auth:sanctum']], function (){
+
+});

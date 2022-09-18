@@ -4,15 +4,19 @@ namespace Modules\Auth\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Model
 {
-    use HasFactory;
+    use HasApiTokens, HasFactory, Notifiable;
 
-    protected $fillable = [];
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'role'
+    ];
     
-    protected static function newFactory()
-    {
-        return \Modules\Auth\Database\factories\UserFactory::new();
-    }
+    protected $table = 'users';
 }
