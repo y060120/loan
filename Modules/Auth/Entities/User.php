@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Modules\Loan\Entities\LoanRegister;
+use Modules\Loan\Entities\LoanRepayment;
 
 class User extends Model
 {
@@ -19,4 +21,12 @@ class User extends Model
     ];
     
     protected $table = 'users';
+
+    public function loan(){
+        return $this->hasOne(LoanRegister::class);
+    }
+
+    public function repayment(){
+        return $this->hasMany(LoanRepayment::class);
+    }
 }

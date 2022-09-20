@@ -26,14 +26,14 @@ class AuthController extends Controller
      */
     public function create(Request $request)
     {
+        // validate user registration
+        $fields = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|unique:users,email',
+            'password' => 'required|string',
+            'role' => 'required|string',
+        ]);
         try {
-            // validate user registration
-            $fields = $request->validate([
-                'name' => 'required|string|max:255',
-                'email' => 'required|string|unique:users,email',
-                'password' => 'required|string',
-                'role' => 'required|string',
-            ]);
             // create new user with role
             return User::create([
                 'name' => $fields['name'],
@@ -41,19 +41,18 @@ class AuthController extends Controller
                 'password' => Hash::make($fields['password']),
                 'role' => $fields['role'],
             ]);
-        } catch (\Exception$e) {
+        } catch (\Exception $e) {
             return response($e, 401);
         }
     }
 
     public function login(Request $request)
     {
+        $fields = $request->validate([
+            'email' => 'required|string',
+            'password' => 'required|string',
+        ]);
         try {
-            $fields = $request->validate([
-                'email' => 'required|string',
-                'password' => 'required|string',
-            ]);
-
             // Check email
             $user = User::where('email', $fields['email'])->first();
 
