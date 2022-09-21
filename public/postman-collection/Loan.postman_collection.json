@@ -1,0 +1,404 @@
+{
+	"info": {
+		"_postman_id": "f3b9e568-e567-47b6-865c-19ce6e7a24e3",
+		"name": "Loan",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3473254"
+	},
+	"item": [
+		{
+			"name": "Create User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "2|AjEdJdMtV7YQvJ7v2DCHkcEmlGHkH5yKMv3HWpKm",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "mathi",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "mathi@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "abcd@1234",
+							"type": "text"
+						},
+						{
+							"key": "role",
+							"value": "user",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/api/auth/userCreate",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"userCreate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "doLogin",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "user@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "abcd@1234",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/api/auth/dologin",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"dologin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "loan/loanCreate",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "2|plADB8yCLcN5OkKdFQKYajPbAgQ4UCC6ol0x4vsO",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "loan_type",
+							"value": "personal",
+							"type": "text"
+						},
+						{
+							"key": "amount",
+							"value": "100",
+							"type": "text"
+						},
+						{
+							"key": "term",
+							"value": "3",
+							"type": "text"
+						},
+						{
+							"key": "loan_status",
+							"value": "PENDING",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/api/loan/loanCreate",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"loan",
+						"loanCreate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "admin/viewLoan/{userId}",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|jSvG5cVdb5lUJmpOGmbOT8B6kj3bYDwcuSce2mVq",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{url}}/api/admin/showPendingLoan/2",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"showPendingLoan",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/admin/approveLoan/{loanId}",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|jSvG5cVdb5lUJmpOGmbOT8B6kj3bYDwcuSce2mVq",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/api/admin/approveLoan/1",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"approveLoan",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "loan/viewLoanStatus/{loanId}",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "2|plADB8yCLcN5OkKdFQKYajPbAgQ4UCC6ol0x4vsO",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/api/loan/viewLoanStatus/1",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"loan",
+						"viewLoanStatus",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "loan/viewRepayment/{loanId}",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "2|plADB8yCLcN5OkKdFQKYajPbAgQ4UCC6ol0x4vsO",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/api/loan/viewRepayment/1",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"loan",
+						"viewRepayment",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "loan/payRepayment/{repayId}/loan/{loanId}",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "2|plADB8yCLcN5OkKdFQKYajPbAgQ4UCC6ol0x4vsO",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "amount",
+							"value": "34.3333",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/api/loan/payRepayment/3/loan/1",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"loan",
+						"payRepayment",
+						"3",
+						"loan",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "admin/viewUser",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|jSvG5cVdb5lUJmpOGmbOT8B6kj3bYDwcuSce2mVq",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/api/admin/viewUser",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"viewUser"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -35,12 +35,13 @@ class AuthController extends Controller
         ]);
         try {
             // create new user with role
-            return User::create([
-                'name' => $fields['name'],
-                'email' => $fields['email'],
-                'password' => Hash::make($fields['password']),
-                'role' => $fields['role'],
-            ]);
+            $createdUser = User::create([
+                                    'name' => $fields['name'],
+                                    'email' => $fields['email'],
+                                    'password' => Hash::make($fields['password']),
+                                    'role' => $fields['role'],
+                            ]);
+            return response($createdUser, 200);
         } catch (\Exception $e) {
             return response($e, 401);
         }
@@ -70,7 +71,7 @@ class AuthController extends Controller
                 'token' => $token,
             ];
 
-            return response($response, 201);
+            return response($response, 200);
 
         } catch (\Exception $e) {
             return response($e, 401);

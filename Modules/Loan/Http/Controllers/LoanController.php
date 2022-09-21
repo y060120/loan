@@ -10,6 +10,7 @@ use Illuminate\Routing\Controller;
 use Modules\Loan\Entities\LoanRegister;
 use Modules\Loan\Entities\LoanRepayment;
 use Modules\Loan\Traits\Reuse;
+use Modules\Auth\Entities\User;
 
 class LoanController extends Controller
 {
@@ -31,16 +32,16 @@ class LoanController extends Controller
                 'loan_type' => $fields['loan_type'],
                 'amount' => $fields['amount'],
                 'term' => $fields['term'],
-                'loan_status' => $fields['loan_status'],
+                'loan_status' => $fields['loan_status']
             ]);
 
             return response(trans('loan::messages.loanSubmit'), 200);
-        } catch (\Exception$e) {
+        } catch (\Exception $e) {
             return response($e, 401);
         }
     }
 // view pending loans
-    public function showLoan($userId)
+    public function showPendingLoan($userId)
     {
         try {
             // fetch pending for approval records based on user id
@@ -50,7 +51,7 @@ class LoanController extends Controller
             ])->get();
 
             return response($loanData, 200);
-        } catch (\Exception$e) {
+        } catch (\Exception $e) {
             return response($e, 401);
         }
     }
@@ -81,7 +82,21 @@ class LoanController extends Controller
                 return response(trans('loan::messages.nothing'), 400);
             }
 
-        } catch (\Exception$e) {
+        } catch (\Exception $e) {
+            return response($e, 401);
+        }
+    }
+    // view all users and you can use the userId for sending requests
+    public function viewUser(){
+        try {            
+            $userData = User::all();
+
+            if (count($userData) > 0) {
+                return response($userData, 200);
+            } else {
+                return response(trans('loan::messages.nouser'), 400);
+            }
+        } catch (\Exception $e) {
             return response($e, 401);
         }
     }
@@ -145,6 +160,8 @@ class LoanController extends Controller
                         $repayment->balance_amount = $balanceAmount;
                         $repayment->repayment_status = 'Paid';
                         $repayment->save();
+                    }else{
+                        return response(trans('loan::messages.amountLarge', ['amount'=>$repayment->term_amount]), 200);  // return if amount is low
                     }  
                     $termCount = $dataTerm->term;
         

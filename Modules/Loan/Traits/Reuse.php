@@ -6,7 +6,7 @@ trait Reuse
 
     public function calculateRepayment($loanAmount, $termPlan, $userId, $loanId)
     {
-        $loanValue = $loanAmount / (float) $termPlan;
+        $loanValue = bcdiv($loanAmount, (float) $termPlan,10);
         $term = bcmul($loanValue, $termPlan, 10); // multiply divided amount with term plan
 
         $subtraction = bcsub($loanAmount, $term, 10);

@@ -7,5 +7,7 @@ return [
     'repay'     => 'Repayment Paid Successfully',
     'allRepay'  => 'All Repayments Paid Fully',
     'alreadyPaid'=> 'Repayment Already Paid',
-    'invalid'=>'Invalid Loan id or pay id'
+    'invalid'=>'Invalid Loan id or pay id',
+    'nouser'=>'No users found',
+    'amountLarge'=> 'Repay Amount must be larger than :amount'
 ];    
