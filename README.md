@@ -10,7 +10,7 @@
 ## Deploying instruction:
 
 * Clone the Repository.
-* Switch to master branch.
+* Switch to main branch.
 * Install latest & necessary Softwares.
 * Create a Database of your choice with username and password and configure it in .env file.
 * Create a new .env file and copy .env.example content there, replace DB_DATABASE, DB_USERNAME, DB_PASSWORD to your database credentials.
