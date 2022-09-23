@@ -20,7 +20,7 @@ return new class extends Migration
             $table->Integer('amount');          
             $table->Integer('term');
             $table->string('loan_status');
-            $table->double('balance_amount')->nullable();     
+            $table->Integer('balance_amount')->nullable();     
             $table->date('loan_approved_date')->nullable();
             $table->timestamps();
         });

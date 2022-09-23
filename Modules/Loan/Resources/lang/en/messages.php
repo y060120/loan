@@ -9,5 +9,7 @@ return [
     'alreadyPaid'=> 'Repayment Already Paid',
     'invalid'=>'Invalid Loan id or pay id',
     'nouser'=>'No users found',
-    'amountLarge'=> 'Repay Amount must be larger than :amount'
+    'amountLarge'=> 'Repay Amount must be larger than :amount',
+    'error'=> 'Some Error Occurred'
 ];    
+//$repayment = $this->payRepayment($userId, $amount, $repayId, $loanId); 

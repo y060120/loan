@@ -18,9 +18,9 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('loan_id')->constrained('customer_loan_register')->onDelete('cascade');
             $table->date('payment_date');
-            $table->double('term_amount');          
+            $table->Integer('term_amount');          
             $table->Integer('total_terms');
-            $table->double('balance_amount')->nullable();
+            $table->Integer('balance_amount')->nullable();
             $table->string('repayment_status');            
             $table->timestamps();
         });

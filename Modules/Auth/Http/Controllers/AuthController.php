@@ -8,9 +8,11 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
 use Modules\Auth\Entities\User;
+use Modules\Loan\Traits\Reuse;
 
 class AuthController extends Controller
 {
+    use Reuse;
     /**
      * Display a listing of the resource.
      * @return Renderable
@@ -36,12 +38,13 @@ class AuthController extends Controller
         try {
             // create new user with role
             $createdUser = User::create([
-                                    'name' => $fields['name'],
-                                    'email' => $fields['email'],
-                                    'password' => Hash::make($fields['password']),
-                                    'role' => $fields['role'],
-                            ]);
+                'name' => $fields['name'],
+                'email' => $fields['email'],
+                'password' => Hash::make($fields['password']),
+                'role' => $fields['role'],
+            ]);
             return response($createdUser, 200);
+
         } catch (\Exception $e) {
             return response($e, 401);
         }
@@ -54,78 +57,10 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
         try {
-            // Check email
-            $user = User::where('email', $fields['email'])->first();
-
-            // Check password
-            if (!$user || !Hash::check($fields['password'], $user->password)) {
-                return response([
-                    'message' => 'Bad credentials',
-                ], 401);
-            }
-
-            $token = $user->createToken('myapptoken')->plainTextToken;
-
-            $response = [
-                'user' => $user,
-                'token' => $token,
-            ];
-
-            return response($response, 200);
-
+            $checkLogin = $this->doLogin($fields);
+            return $checkLogin;
         } catch (\Exception $e) {
             return response($e, 401);
         }
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     * @param Request $request
-     * @return Renderable
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Show the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function show($id)
-    {
-        return view('auth::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function edit($id)
-    {
-        return view('auth::edit');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
-     * @return Renderable
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     * @param int $id
-     * @return Renderable
-     */
-    public function destroy($id)
-    {
-        //
     }
 }
