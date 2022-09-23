@@ -9,6 +9,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
 use Modules\Auth\Entities\User;
 use Modules\Loan\Traits\Reuse;
+use Modules\Auth\Http\Requests\UserRegister;
 
 class AuthController extends Controller
 {
@@ -19,32 +20,24 @@ class AuthController extends Controller
      */
     public function index()
     {
-        return view('auth::index');
+        //
     }
 
     /**
      * Show the form for creating a new resource.
      * @return Renderable
      */
-    public function create(Request $request)
+    public function create(UserRegister $request) // created custom form request
     {
-        // validate user registration
-        $fields = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|unique:users,email',
-            'password' => 'required|string',
-            'role' => 'required|string',
-        ]);
         try {
             // create new user with role
             $createdUser = User::create([
-                'name' => $fields['name'],
-                'email' => $fields['email'],
-                'password' => Hash::make($fields['password']),
-                'role' => $fields['role'],
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'role' => $request->role,
             ]);
             return response($createdUser, 200);
-
         } catch (\Exception $e) {
             return response($e, 401);
         }

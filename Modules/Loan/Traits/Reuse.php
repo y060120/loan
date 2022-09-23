@@ -87,7 +87,7 @@ trait Reuse
            return trans('loan::messages.nothing');
        }
    }
-   public function viewLoanStatus($loanId): array
+   public function viewLoanStatusTrait($loanId): array
    {
        $userId = auth()->user()->id;
 
@@ -99,7 +99,7 @@ trait Reuse
        return $loanData;
    }
 
-   public function viewRepayment($loanId): array
+   public function viewRepaymentTrait($loanId): array
    {
        $userId = auth()->user()->id;
 

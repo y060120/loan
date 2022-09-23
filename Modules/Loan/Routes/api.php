@@ -18,7 +18,7 @@ Route::group(['middleware'=>['auth:sanctum']], function (){
     Route::prefix('loan')->group(function() {     // user routes    
         Route::post('/loanCreate', 'LoanController@create');  // register a loan    
         Route::get('/viewLoanStatus/{loanId}', 'LoanController@viewLoanStatus');   // view loan
-        Route::get('/viewRepayment/{loanId}', 'LoanController@viewRepayment');   // view repayment status
+        Route::get('/viewRepayment/{loanId:loan_id}', 'LoanController@viewRepayment');   // view repayment status
         Route::post('/payRepayment/{repayId}/loan/{loanId}', 'LoanController@payRepayment'); // pay customer repayment using repayment id and loan id both required
     });
 

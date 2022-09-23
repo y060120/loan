@@ -11,23 +11,23 @@ use Modules\Loan\Entities\LoanRegister;
 use Modules\Loan\Entities\LoanRepayment;
 use Modules\Loan\Traits\Reuse;
 use Modules\Auth\Entities\User;
+use Modules\Loan\Http\Requests\LoanRegisterRequest;
 
 class LoanController extends Controller
 {
     use Reuse;
-    public function create(Request $request):string
-    {
-        // validate loan registration
-        $fields = $request->validate([
-            'loan_type' => 'required|string|max:100',
-            'amount' => 'required|integer',
-            'term' => 'required|integer',
-            'loan_status' => 'required|string',
-        ]);
+    public function create(LoanRegisterRequest $request):string  // custom form request created
+    {  
         try {
-            // create new Loan for the user
-            $value = $this->createLoanTrait($fields);
-            if ($value) {
+            // create new Loan for the user            
+            $dataArray = LoanRegister::create([
+                'user_id' => auth()->user()->id,
+                'loan_type' => $request->loan_type,
+                'amount' => $request->amount,
+                'term' => $request->term,
+                'loan_status' => $request->loan_status
+            ]);
+            if ($dataArray) {
                 return response(trans('loan::messages.loanSubmit'), 200);
             } else {
                 return response(trans('loan::messages.error'), 400);
@@ -37,7 +37,7 @@ class LoanController extends Controller
         }
     }
     // view pending loans
-    public function showPendingLoan(int $userId)
+    public function showPendingLoan($userId)
     {
         try {
             // fetch pending for approval records based on user id
@@ -45,6 +45,8 @@ class LoanController extends Controller
             if ($loanData) {
                 return response($loanData, 200);
             }
+
+            return $userId;
         } catch (\Exception $e) {
             return response($e, 401);
         }
@@ -78,15 +80,12 @@ class LoanController extends Controller
         }
     }
 
-    public function viewLoanStatus($loanId) // view loan approval status
+    public function viewLoanStatus(LoanRegister $loanId) // view loan approval status used Model binding
     {
         try {
-            $loanStatus = $this->viewLoanStatus($loanId); 
-            if (count($loanStatus) > 0) {
-                return response($loanStatus, 200);
-            } else {
-                return response(trans('loan::messages.noloan'), 400);
-            }
+            if(!is_array($loanId)){
+                return $loanId;
+            }            
         } catch (\Exception $e) {
             return response($e, 401);
         }
@@ -95,7 +94,7 @@ class LoanController extends Controller
     public function viewRepayment($loanId) // view repayment status
     {
         try {
-            $repayment = $this->viewRepayment($loanId); 
+            $repayment = $this->viewRepaymentTrait($loanId); 
             if (count($repayment) > 0) {
                 return response($repayment, 200);
             } else {
